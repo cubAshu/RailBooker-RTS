@@ -1,0 +1,45 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: railway-deployment
+  namespace: railbooker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: railway
+  template:
+    metadata:
+      labels:
+        app: railway
+    spec:  
+      nodeSelector:
+        tier: app
+      containers:
+      - name: railway-container
+        image: cubashu/railbooker:v1.0.0
+
+        envFrom:
+        - configMapRef:
+            name: railway-configmap
+        - secretRef:
+            name: railway-secrets
+
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /RailBooker-RTS
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /RailBooker-RTS
+            port: 8080
+        ports:
+        - containerPort: 8080
+          protocol: TCP

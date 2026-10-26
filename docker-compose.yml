@@ -1,0 +1,36 @@
+services:
+  web:
+    image: railbooker:v1.0.0
+    environment:
+      DB_HOST: ${HOST}
+      DB_PORT: 3306
+      DB_NAME: ${DATABASE}
+      DB_USER: ${USERNAME}
+      DB_PASSWORD: ${PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+ 
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: ${DATABASE}
+      MYSQL_USER: ${USERNAME}
+      MYSQL_PASSWORD: ${PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./railway.sql:/docker-entrypoint-initdb.d/railway.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+ 
+volumes:
+  db_data:
+ 
+ 
+ 
+ 

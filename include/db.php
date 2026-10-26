@@ -1,9 +1,9 @@
 <?php
 // Database connection
-$host = 'localhost';
-$username = 'root';  
-$password = '';      
-$database = 'railway';
+$host = $_ENV['HOST'];
+$username = $_ENV['USERNAME'];
+$password = $_ENV['PASSWORD'];
+$database = $_ENV['DATABASE'];
 
 $conn = mysqli_connect($host, $username, $password, $database);
 if (!$conn) {

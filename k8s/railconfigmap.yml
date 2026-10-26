@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: railway-configmap
+  namespace: railbooker
+data:
+  HOST: 'localhost'
+  USERNAME: 'ashu'
+  DATABASE: 'railway'
